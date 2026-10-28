@@ -221,6 +221,34 @@
       .nav-links .nav-contact::after { display: none; }
       .nav-links .nav-contact:hover { border-color: var(--moss); color: var(--moss-dark); }
 
+      .language-switch {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 2px;
+        padding: 3px;
+        border: 1px solid var(--line);
+        border-radius: 3px;
+      }
+
+      .language-switch button {
+        min-height: 30px;
+        padding: 0 7px;
+        border: 0;
+        border-radius: 2px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-family: var(--mono);
+        font-size: .62rem;
+        line-height: 1;
+      }
+
+      .language-switch button[aria-pressed="true"] {
+        background: var(--ink);
+        color: var(--white);
+      }
+
       .menu-toggle {
         display: none;
         width: 44px;
@@ -303,6 +331,12 @@
         color: var(--moss);
         font-weight: 400;
         font-style: normal;
+      }
+
+      :lang(ja) .hero h1 {
+        font-size: clamp(3rem, 5.2vw, 4.8rem);
+        line-height: 1.1;
+        letter-spacing: -.075em;
       }
 
       .hero-role {
@@ -1007,7 +1041,6 @@
       @media (max-width: 980px) {
         .wrap { width: min(var(--content), calc(100% - 48px)); }
         .nav { gap: 18px; }
-        .nav-links { gap: 15px; font-size: .72rem; }
         .brand { gap: 9px; font-size: .76rem; }
         .hero { grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr); gap: 40px; }
         .hero-visual { min-height: 390px; }
@@ -1018,6 +1051,25 @@
         .journey-dot { grid-row: span 3; }
         .journey-phase { margin-top: 0; }
         .journey-step h3 { margin-top: 4px; }
+        .menu-toggle { display: flex; }
+        .nav-links {
+          position: fixed;
+          inset: 76px 0 auto;
+          display: none;
+          max-height: calc(100svh - 76px);
+          align-items: stretch;
+          overflow-y: auto;
+          padding: 14px 24px 24px;
+          border-bottom: 1px solid var(--line);
+          background: var(--paper);
+          box-shadow: 0 16px 28px rgba(29, 39, 35, .09);
+        }
+
+        .is-scrolled .nav-links { top: 66px; }
+        .nav-links.is-open { display: flex; flex-direction: column; }
+        .nav-links a { padding-block: 12px; font-size: .88rem; }
+        .nav-links .nav-contact { margin-top: 5px; text-align: center; }
+        .language-switch { align-self: flex-start; margin-top: 12px; }
       }
 
       @media (max-width: 720px) {
@@ -1026,24 +1078,8 @@
         .section { padding-block: 82px; }
         .nav { min-height: 68px; }
         .is-scrolled .nav { min-height: 62px; }
-        .menu-toggle { display: flex; }
-        .nav-links {
-          position: fixed;
-          inset: 68px 0 auto;
-          display: none;
-          max-height: calc(100svh - 68px);
-          align-items: stretch;
-          overflow-y: auto;
-          padding: 14px 20px 24px;
-          border-bottom: 1px solid var(--line);
-          background: var(--paper);
-          box-shadow: 0 16px 28px rgba(29, 39, 35, .09);
-        }
-
+        .nav-links { inset-block-start: 68px; padding-inline: 20px; }
         .is-scrolled .nav-links { top: 62px; }
-        .nav-links.is-open { display: flex; flex-direction: column; }
-        .nav-links a { padding-block: 13px; font-size: .9rem; }
-        .nav-links .nav-contact { margin-top: 7px; text-align: center; }
         .hero {
           min-height: auto;
           grid-template-columns: 1fr;
@@ -1150,6 +1186,11 @@
           <a href="#journey">Journey</a>
           <a href="#future">AI &amp; Future</a>
           <a class="nav-contact" href="#contact">Contact <span aria-hidden="true">↗</span></a>
+          <div class="language-switch" role="group" aria-label="Choose language">
+            <button type="button" data-language="en" aria-pressed="true" lang="en">EN</button>
+            <button type="button" data-language="vi" aria-pressed="false" lang="vi">VI</button>
+            <button type="button" data-language="ja" aria-pressed="false" lang="ja">日本語</button>
+          </div>
         </div>
       </nav>
     </header>
@@ -1464,7 +1505,7 @@
               <p>Strengthen alignment at the customer interface.</p>
             </article>
             <article class="vision-step">
-              <time>Next</time>
+              <time datetime="2027">2027</time>
               <h3>Project Manager</h3>
               <p>Take ownership of plans, teams and project outcomes.</p>
             </article>
@@ -1509,17 +1550,481 @@
     </footer>
 
     <script>
+      const translations = {
+        vi: {
+          "Skip to content": "Bỏ qua điều hướng",
+          "Home": "Trang chủ",
+          "About": "Giới thiệu",
+          "Experience": "Kinh nghiệm",
+          "Strengths": "Thế mạnh",
+          "Journey": "Hành trình",
+          "AI & Future": "AI & Tương lai",
+          "Contact": "Liên hệ",
+          "Japan × Vietnam · Software Delivery": "Nhật Bản × Việt Nam · Phát triển phần mềm",
+          "Software Engineer / BrSE / Project & Team Management": "Kỹ sư phần mềm / BrSE / Quản lý dự án & đội ngũ",
+          "Japan × Vietnam": "Nhật Bản × Việt Nam",
+          "Onsite Leader": "Trưởng nhóm onsite",
+          "Connecting people,": "Kết nối con người,",
+          "technology &": "công nghệ và",
+          "business.": "kinh doanh.",
+          "14+ years across software development and Japanese IT projects. I connect customer context with engineering execution so teams can deliver work that matters.": "Hơn 14 năm trong lĩnh vực phát triển phần mềm và các dự án CNTT tại Nhật Bản. Tôi kết nối bối cảnh của khách hàng với năng lực triển khai kỹ thuật để đội ngũ tạo ra kết quả có ý nghĩa.",
+          "View my experience": "Xem kinh nghiệm",
+          "Contact me": "Liên hệ với tôi",
+          "14+ years in IT": "Hơn 14 năm trong ngành CNTT",
+          "A practice of connection": "Kết nối để cùng phát triển",
+          "Connecting Japan, Vietnam, business and technology": "Kết nối Nhật Bản, Việt Nam, kinh doanh và công nghệ",
+          "Four interconnected ideas surround a shared delivery point: Japan, Vietnam, business and technology.": "Bốn yếu tố liên kết cùng hướng đến mục tiêu chung: Nhật Bản, Việt Nam, kinh doanh và công nghệ.",
+          "Japan": "Nhật Bản",
+          "Business": "Kinh doanh",
+          "Vietnam": "Việt Nam",
+          "Technology": "Công nghệ",
+          "CUSTOMER": "KHÁCH HÀNG",
+          "PURPOSE": "MỤC TIÊU",
+          "ENGINEERING": "KỸ THUẬT",
+          "DELIVERY": "TRIỂN KHAI",
+          "SHARED": "CHUNG",
+          "OUTCOME": "KẾT QUẢ",
+          "01 — CONNECT / PLAN / DELIVER": "01 — KẾT NỐI / LẬP KẾ HOẠCH / TRIỂN KHAI",
+          "01 / About": "01 / Giới thiệu",
+          "From building software": "Từ phát triển phần mềm",
+          "to helping teams build well.": "đến giúp đội ngũ tạo ra sản phẩm tốt.",
+          "My work has grown beyond individual tasks to the wider system: the people, decisions and delivery practices behind useful software.": "Công việc của tôi không chỉ dừng ở từng nhiệm vụ, mà mở rộng ra toàn bộ hệ thống: con người, quyết định và cách thức triển khai tạo nên phần mềm hữu ích.",
+          "years across software engineering and IT delivery": "năm kinh nghiệm phát triển phần mềm và triển khai dự án CNTT",
+          "I began in": "Tôi bắt đầu với",
+          "software development": "phát triển phần mềm",
+          ", learning how systems are built and what it takes to make them reliable. Working with Japanese customers and Vietnamese engineering teams broadened my view: good delivery depends as much on shared understanding as it does on good code.": ", học cách xây dựng hệ thống và đảm bảo độ tin cậy. Làm việc với khách hàng Nhật Bản và các đội ngũ kỹ thuật Việt Nam giúp tôi nhận ra rằng triển khai hiệu quả cần sự thấu hiểu chung, cũng quan trọng như chất lượng mã nguồn.",
+          "Over time, my focus expanded into": "Theo thời gian, tôi mở rộng sang",
+          "requirements, planning, team coordination and customer communication": "phân tích yêu cầu, lập kế hoạch, điều phối đội ngũ và trao đổi với khách hàng",
+          ". I enjoy turning a complex situation into clear priorities, practical next steps and a team that can move forward together.": ". Tôi yêu thích việc biến tình huống phức tạp thành ưu tiên rõ ràng, bước đi thiết thực và sự đồng thuận để cả đội cùng tiến lên.",
+          "The question I keep coming back to is simple:": "Tôi luôn trăn trở với một câu hỏi:",
+          "how can a team create something that genuinely serves the business?": "làm thế nào để đội ngũ tạo ra sản phẩm thực sự mang lại giá trị cho doanh nghiệp?",
+          "Engineering": "Kỹ thuật",
+          "Coordination": "Điều phối",
+          "Delivery": "Triển khai",
+          "02 / Experience": "02 / Kinh nghiệm",
+          "Perspective from both": "Thấu hiểu từ chi tiết",
+          "the details and the whole.": "đến bức tranh tổng thể.",
+          "A career across software development, enterprise environments and cross-border delivery—with a steady focus on making work clear and outcomes dependable.": "Kinh nghiệm trong phát triển phần mềm, hệ thống doanh nghiệp và triển khai xuyên biên giới — luôn tập trung làm rõ công việc và đảm bảo kết quả đáng tin cậy.",
+          "Enterprise & financial systems": "Hệ thống doanh nghiệp & tài chính",
+          "Connecting business needs to sound engineering decisions.": "Kết nối nhu cầu kinh doanh với giải pháp kỹ thuật phù hợp.",
+          "Experience supporting enterprise and banking-system initiatives, translating requirements into workable plans and keeping customer and engineering teams aligned.": "Kinh nghiệm hỗ trợ các dự án hệ thống doanh nghiệp và ngân hàng, chuyển hóa yêu cầu thành kế hoạch khả thi và gắn kết khách hàng với đội ngũ kỹ thuật.",
+          "Requirements": "Yêu cầu",
+          "System understanding": "Hiểu biết hệ thống",
+          "Technical coordination": "Điều phối kỹ thuật",
+          "Japan–Vietnam delivery": "Triển khai Nhật Bản–Việt Nam",
+          "Helping distributed teams move in the same direction.": "Gắn kết các đội ngũ phân tán cùng hướng đến mục tiêu chung.",
+          "BrSE, team-management and project-coordination experience across Japanese customers and offshore teams, from planning through issue resolution and delivery.": "Kinh nghiệm BrSE, quản lý đội ngũ và điều phối dự án giữa khách hàng Nhật Bản với đội ngũ offshore — từ lập kế hoạch đến xử lý vấn đề và bàn giao.",
+          "Customer communication": "Trao đổi với khách hàng",
+          "WBS & schedule": "WBS & tiến độ",
+          "Team management": "Quản lý đội ngũ",
+          "Client and project details are intentionally kept general. Add verified role names, dates or outcomes here if you want to share them publicly.": "Thông tin khách hàng và dự án được giữ ở mức tổng quát. Bạn có thể bổ sung chức danh, thời gian hoặc kết quả đã xác thực nếu muốn công khai.",
+          "03 / Core strengths": "03 / Năng lực cốt lõi",
+          "A broad view.": "Tư duy tổng thể.",
+          "A practical way of working.": "Cách làm việc thực tiễn.",
+          "A mix of technical grounding, delivery discipline and cross-cultural communication—applied to the needs of each team and project.": "Kết hợp nền tảng kỹ thuật, kỷ luật triển khai và giao tiếp đa văn hóa — linh hoạt theo nhu cầu của từng đội ngũ và dự án.",
+          "01 / ENGINEERING": "01 / KỸ THUẬT",
+          "Understand the system": "Thấu hiểu hệ thống",
+          "Software development · Enterprise systems · Web & API concepts · Technical coordination": "Phát triển phần mềm · Hệ thống doanh nghiệp · Web & API · Điều phối kỹ thuật",
+          "02 / DELIVERY": "02 / TRIỂN KHAI",
+          "Make the work actionable": "Biến kế hoạch thành hành động",
+          "Requirement analysis · Project planning · WBS & schedules · Risk and issue management": "Phân tích yêu cầu · Lập kế hoạch · WBS & tiến độ · Quản lý rủi ro và vấn đề",
+          "03 / LEADERSHIP": "03 / LÃNH ĐẠO",
+          "Help teams do their best work": "Giúp đội ngũ phát huy tốt nhất",
+          "Team management · Offshore coordination · Mentoring · Stakeholder alignment": "Quản lý đội ngũ · Điều phối offshore · Hướng dẫn · Gắn kết các bên liên quan",
+          "04 / JAPAN × VIETNAM": "04 / NHẬT BẢN × VIỆT NAM",
+          "Bridge ways of working": "Kết nối cách làm việc",
+          "Japanese communication · BrSE · Customer collaboration · Cross-cultural teamwork": "Giao tiếp tiếng Nhật · BrSE · Phối hợp khách hàng · Làm việc đa văn hóa",
+          "05 / BUSINESS": "05 / KINH DOANH",
+          "Keep value in view": "Luôn hướng đến giá trị",
+          "Business context · Proposal thinking · Cost and margin awareness · Value delivery": "Bối cảnh kinh doanh · Tư duy đề xuất · Nhận thức chi phí và lợi nhuận · Tạo giá trị",
+          "06 / LANGUAGE": "06 / NGÔN NGỮ",
+          "Communicate with context": "Giao tiếp thấu đáo",
+          "Japanese — JLPT N1 · Japanese customer communication · Japan–Vietnam coordination": "Tiếng Nhật — JLPT N1 · Trao đổi với khách hàng Nhật · Điều phối Nhật Bản–Việt Nam",
+          "04 / Japan × Vietnam": "04 / Nhật Bản × Việt Nam",
+          "Different contexts.": "Khác biệt về bối cảnh.",
+          "One shared outcome.": "Đồng lòng vì mục tiêu chung.",
+          "A bridge between the people shaping the need and the people building the solution.": "Kết nối những người xác định nhu cầu với đội ngũ xây dựng giải pháp.",
+          "Customer / Business": "Khách hàng / Kinh doanh",
+          "Business context": "Bối cảnh kinh doanh",
+          "Priorities": "Ưu tiên",
+          "Communication": "Giao tiếp",
+          "Shared understanding": "Thấu hiểu chung",
+          "Reliable delivery": "Triển khai đáng tin cậy",
+          "Engineering / Delivery": "Kỹ thuật / Triển khai",
+          "System design": "Thiết kế hệ thống",
+          "Development": "Phát triển",
+          "Team execution": "Thực thi đội ngũ",
+          "Quality & delivery": "Chất lượng & bàn giao",
+          "“Bridging business requirements and engineering execution across Japan and Vietnam.”": "“Kết nối yêu cầu kinh doanh với năng lực triển khai kỹ thuật giữa Nhật Bản và Việt Nam.”",
+          "05 / Working philosophy": "05 / Triết lý làm việc",
+          "Calm in approach.": "Bình tĩnh trong cách làm.",
+          "Clear on what matters.": "Rõ ràng về điều quan trọng.",
+          "Good delivery is rarely one big gesture. It is the result of seeing clearly, making the next step manageable and improving as a team.": "Kết quả tốt hiếm khi đến từ một khoảnh khắc đột phá. Đó là thành quả của việc nhìn nhận sáng rõ, chia nhỏ bước tiếp theo và cùng nhau cải thiện.",
+          "Understand the whole picture": "Hiểu bức tranh tổng thể",
+          "Look beyond the immediate task to the business, system, people, schedule and risks around it.": "Không chỉ nhìn vào nhiệm vụ trước mắt, mà còn hiểu doanh nghiệp, hệ thống, con người, tiến độ và rủi ro liên quan.",
+          "Make complexity clear": "Làm rõ điều phức tạp",
+          "Turn ambiguity into shared context, sensible priorities and concrete actions.": "Biến sự mơ hồ thành bối cảnh chung, thứ tự ưu tiên hợp lý và hành động cụ thể.",
+          "Connect the people doing the work": "Kết nối những người cùng thực hiện",
+          "Bring customers, business stakeholders and engineering teams into the same conversation.": "Đưa khách hàng, các bên kinh doanh và đội ngũ kỹ thuật vào cùng một cuộc trao đổi.",
+          "Deliver value, then improve": "Tạo giá trị và tiếp tục cải thiện",
+          "Technology is a means, not the destination. Learn from each delivery and make the next one better.": "Công nghệ là phương tiện, không phải đích đến. Học hỏi sau mỗi lần bàn giao để lần sau làm tốt hơn.",
+          "06 / Career journey": "06 / Hành trình nghề nghiệp",
+          "Growing the scope": "Mở rộng phạm vi",
+          "of contribution.": "đóng góp.",
+          "The path has moved from building software to helping people, teams and delivery systems work together.": "Hành trình phát triển từ xây dựng phần mềm đến kết nối con người, đội ngũ và hệ thống triển khai.",
+          "Foundation": "Nền tảng",
+          "Software Engineer": "Kỹ sư phần mềm",
+          "Build a strong understanding of software and systems.": "Xây dựng nền tảng vững chắc về phần mềm và hệ thống.",
+          "Connection": "Kết nối",
+          "Connect customer intent with engineering work.": "Kết nối mong muốn của khách hàng với công việc kỹ thuật.",
+          "Ownership": "Làm chủ",
+          "Senior BrSE": "BrSE cấp cao",
+          "Take broader ownership of communication and clarity.": "Chủ động hơn trong giao tiếp và làm rõ yêu cầu.",
+          "Team impact": "Tác động đội ngũ",
+          "Team & Project Coordination": "Điều phối đội ngũ & dự án",
+          "Support planning, alignment and team execution.": "Hỗ trợ lập kế hoạch, thống nhất và điều phối thực thi.",
+          "Current direction": "Định hướng hiện tại",
+          "Onsite Leadership": "Lãnh đạo onsite",
+          "Expand influence across customer and delivery teams.": "Mở rộng vai trò kết nối khách hàng và đội ngũ triển khai.",
+          "Future direction": "Định hướng tương lai",
+          "Project → Delivery Management": "Quản lý dự án → Quản lý triển khai",
+          "Grow responsibility for outcomes and business impact.": "Gia tăng trách nhiệm với kết quả và tác động kinh doanh.",
+          "A progression in scope and responsibility—not a checklist of titles.": "Đây là sự phát triển về phạm vi và trách nhiệm, không đơn thuần là danh sách chức danh.",
+          "07 / AI & future": "07 / AI & tương lai",
+          "Better leverage.": "Tận dụng sức mạnh mới.",
+          "More meaningful work.": "Tạo thêm giá trị thiết thực.",
+          "AI is changing how software gets built. I am exploring": "AI đang thay đổi cách xây dựng phần mềm. Tôi đang tìm hiểu",
+          "AI-assisted development and automation": "phát triển phần mềm có AI hỗ trợ và tự động hóa",
+          "with a practical question in mind: how can better tools help teams think more clearly, reduce repetitive work and deliver greater value?": "với một câu hỏi thực tiễn: công cụ tốt hơn có thể giúp đội ngũ tư duy rõ ràng, giảm việc lặp lại và tạo ra nhiều giá trị hơn như thế nào?",
+          "“The future is not about writing more code. It is about creating more value with better leverage.”": "“Tương lai không nằm ở việc viết thêm mã, mà ở khả năng tạo ra nhiều giá trị hơn nhờ tận dụng công cụ tốt hơn.”",
+          "AI-assisted coding": "Lập trình có AI hỗ trợ",
+          "AI agents": "Tác tử AI",
+          "Requirements analysis": "Phân tích yêu cầu",
+          "Architecture thinking": "Tư duy kiến trúc",
+          "Workflow automation": "Tự động hóa quy trình",
+          "Team productivity": "Năng suất đội ngũ",
+          "Strengthen alignment at the customer interface.": "Tăng cường kết nối và thống nhất với khách hàng.",
+          "Project Manager": "Quản lý dự án",
+          "Take ownership of plans, teams and project outcomes.": "Chịu trách nhiệm về kế hoạch, đội ngũ và kết quả dự án.",
+          "Long term": "Dài hạn",
+          "Delivery Manager": "Quản lý triển khai",
+          "Connect delivery performance with business value.": "Gắn kết hiệu quả triển khai với giá trị kinh doanh.",
+          "A direction for continued growth: increasing scope, responsibility and business impact.": "Định hướng phát triển liên tục: mở rộng phạm vi, trách nhiệm và tác động kinh doanh.",
+          "08 / Let's connect": "08 / Kết nối",
+          "Good work starts": "Mọi hợp tác tốt đẹp",
+          "with a conversation.": "đều bắt đầu từ trò chuyện.",
+          "I am glad to connect with people interested in technology, AI, Japan–Vietnam collaboration, software delivery and the space between business and engineering.": "Tôi mong muốn kết nối với những người quan tâm đến công nghệ, AI, hợp tác Nhật Bản–Việt Nam, triển khai phần mềm và giao điểm giữa kinh doanh với kỹ thuật.",
+          "Software delivery": "Triển khai phần mềm",
+          "Project management": "Quản lý dự án",
+          "Business × technology": "Kinh doanh × công nghệ",
+          "Visit my GitHub profile": "Xem hồ sơ GitHub",
+          "Add your email and LinkedIn URL here when ready.": "Bổ sung email và đường dẫn LinkedIn khi bạn sẵn sàng.",
+          "GitHub profile": "Hồ sơ GitHub",
+          "Thoughtfully connecting people, technology and business.": "Tận tâm kết nối con người, công nghệ và kinh doanh.",
+          "[Your Name]. Thoughtfully connecting people, technology and business.": "[Your Name]. Tận tâm kết nối con người, công nghệ và kinh doanh.",
+          "GitHub ↗": "GitHub ↗",
+          "Back to top ↑": "Lên đầu trang ↑"
+        },
+        ja: {
+          "Skip to content": "本文へ移動",
+          "Home": "ホーム",
+          "About": "プロフィール",
+          "Experience": "経験",
+          "Strengths": "強み",
+          "Journey": "キャリア",
+          "AI & Future": "AIと未来",
+          "Contact": "お問い合わせ",
+          "Japan × Vietnam · Software Delivery": "日本 × ベトナム · ソフトウェアデリバリー",
+          "Software Engineer / BrSE / Project & Team Management": "ソフトウェアエンジニア / BrSE / プロジェクト・チーム管理",
+          "Japan × Vietnam": "日本 × ベトナム",
+          "Onsite Leader": "オンサイトリーダー",
+          "Connecting people,": "人と",
+          "technology &": "テクノロジー、",
+          "business.": "ビジネスをつなぐ。",
+          "14+ years across software development and Japanese IT projects. I connect customer context with engineering execution so teams can deliver work that matters.": "ソフトウェア開発と日本のITプロジェクトに14年以上携わってきました。お客様の背景やニーズを開発現場につなぎ、チームが価値ある成果を届けられるよう支援します。",
+          "View my experience": "経験を見る",
+          "Contact me": "お問い合わせ",
+          "14+ years in IT": "IT業界で14年以上",
+          "A practice of connection": "つなぐ力",
+          "Connecting Japan, Vietnam, business and technology": "日本、ベトナム、ビジネス、テクノロジーをつなぐ",
+          "Four interconnected ideas surround a shared delivery point: Japan, Vietnam, business and technology.": "日本、ベトナム、ビジネス、テクノロジー。四つの要素をつなぎ、共通の成果へ導きます。",
+          "Japan": "日本",
+          "Business": "ビジネス",
+          "Vietnam": "ベトナム",
+          "Technology": "テクノロジー",
+          "CUSTOMER": "顧客",
+          "PURPOSE": "目的",
+          "ENGINEERING": "エンジニアリング",
+          "DELIVERY": "デリバリー",
+          "SHARED": "共通の",
+          "OUTCOME": "成果",
+          "01 — CONNECT / PLAN / DELIVER": "01 — つなぐ / 計画する / 届ける",
+          "01 / About": "01 / プロフィール",
+          "From building software": "ソフトウェア開発から",
+          "to helping teams build well.": "チームの成果を支える仕事へ。",
+          "My work has grown beyond individual tasks to the wider system: the people, decisions and delivery practices behind useful software.": "個々の開発タスクにとどまらず、役立つソフトウェアを生み出す人、意思決定、デリバリーの仕組みまで視野を広げてきました。",
+          "years across software engineering and IT delivery": "年間のソフトウェア開発・ITデリバリー経験",
+          "I began in": "キャリアの出発点は",
+          "software development": "ソフトウェア開発",
+          ", learning how systems are built and what it takes to make them reliable. Working with Japanese customers and Vietnamese engineering teams broadened my view: good delivery depends as much on shared understanding as it does on good code.": "です。システムの構築と信頼性を学び、日本のお客様やベトナムの開発チームとの協業を通じて視野が広がりました。優れたデリバリーには、コードの品質と同じくらい、関係者間の共通理解が大切です。",
+          "Over time, my focus expanded into": "その後、担当領域は",
+          "requirements, planning, team coordination and customer communication": "要件分析、計画、チーム調整、お客様とのコミュニケーション",
+          ". I enjoy turning a complex situation into clear priorities, practical next steps and a team that can move forward together.": "へと広がりました。複雑な状況を明確な優先事項と実行可能な次の一歩に整理し、チームが共に前進できる状態をつくることにやりがいを感じます。",
+          "The question I keep coming back to is simple:": "いつも立ち返る問いがあります。",
+          "how can a team create something that genuinely serves the business?": "チームはどうすれば、ビジネスに本当に役立つものを生み出せるのか。",
+          "Engineering": "エンジニアリング",
+          "Coordination": "調整・連携",
+          "Delivery": "デリバリー",
+          "02 / Experience": "02 / 経験",
+          "Perspective from both": "細部と全体の",
+          "the details and the whole.": "両方を見渡す視点。",
+          "A career across software development, enterprise environments and cross-border delivery—with a steady focus on making work clear and outcomes dependable.": "ソフトウェア開発、エンタープライズシステム、国境を越えたデリバリーに携わり、仕事を明確にし、確かな成果につなげてきました。",
+          "Enterprise & financial systems": "エンタープライズ・金融システム",
+          "Connecting business needs to sound engineering decisions.": "ビジネスニーズを確かな技術判断につなぐ。",
+          "Experience supporting enterprise and banking-system initiatives, translating requirements into workable plans and keeping customer and engineering teams aligned.": "エンタープライズや銀行システムのプロジェクトにおいて、要件を実行可能な計画に落とし込み、お客様と開発チームの認識を合わせてきました。",
+          "Requirements": "要件",
+          "System understanding": "システム理解",
+          "Technical coordination": "技術調整",
+          "Japan–Vietnam delivery": "日本・ベトナム間のデリバリー",
+          "Helping distributed teams move in the same direction.": "離れたチームが同じ方向へ進めるよう支える。",
+          "BrSE, team-management and project-coordination experience across Japanese customers and offshore teams, from planning through issue resolution and delivery.": "日本のお客様とオフショアチームの間で、BrSE、チーム管理、プロジェクト調整を経験。計画から課題対応、デリバリーまで一貫して支援してきました。",
+          "Customer communication": "顧客コミュニケーション",
+          "WBS & schedule": "WBS・スケジュール",
+          "Team management": "チーム管理",
+          "Client and project details are intentionally kept general. Add verified role names, dates or outcomes here if you want to share them publicly.": "お客様名やプロジェクトの詳細は一般的な表現にしています。公開する場合は、確認済みの役職、期間、成果を追加してください。",
+          "03 / Core strengths": "03 / 強み",
+          "A broad view.": "全体を見渡す視点。",
+          "A practical way of working.": "現場に根ざした進め方。",
+          "A mix of technical grounding, delivery discipline and cross-cultural communication—applied to the needs of each team and project.": "技術の基礎、デリバリーの規律、異文化間のコミュニケーションを、チームやプロジェクトの状況に応じて活かします。",
+          "01 / ENGINEERING": "01 / エンジニアリング",
+          "Understand the system": "システムを理解する",
+          "Software development · Enterprise systems · Web & API concepts · Technical coordination": "ソフトウェア開発 · エンタープライズシステム · Web・API · 技術調整",
+          "02 / DELIVERY": "02 / デリバリー",
+          "Make the work actionable": "計画を実行につなげる",
+          "Requirement analysis · Project planning · WBS & schedules · Risk and issue management": "要件分析 · プロジェクト計画 · WBS・進捗管理 · リスク・課題管理",
+          "03 / LEADERSHIP": "03 / リーダーシップ",
+          "Help teams do their best work": "チームの力を引き出す",
+          "Team management · Offshore coordination · Mentoring · Stakeholder alignment": "チーム管理 · オフショア連携 · メンタリング · ステークホルダー調整",
+          "04 / JAPAN × VIETNAM": "04 / 日本 × ベトナム",
+          "Bridge ways of working": "仕事の進め方をつなぐ",
+          "Japanese communication · BrSE · Customer collaboration · Cross-cultural teamwork": "日本語でのコミュニケーション · BrSE · 顧客との協業 · 異文化チームワーク",
+          "05 / BUSINESS": "05 / ビジネス",
+          "Keep value in view": "価値を見据える",
+          "Business context · Proposal thinking · Cost and margin awareness · Value delivery": "ビジネス背景 · 提案力 · コスト・利益意識 · 価値の提供",
+          "06 / LANGUAGE": "06 / 言語",
+          "Communicate with context": "背景を踏まえて伝える",
+          "Japanese — JLPT N1 · Japanese customer communication · Japan–Vietnam coordination": "日本語 — JLPT N1 · 日本のお客様との対応 · 日越間の調整",
+          "04 / Japan × Vietnam": "04 / 日本 × ベトナム",
+          "Different contexts.": "異なる背景を理解し、",
+          "One shared outcome.": "共通の成果へ。",
+          "A bridge between the people shaping the need and the people building the solution.": "ニーズを描く人と、解決策をつくる人の間をつなぎます。",
+          "Customer / Business": "顧客 / ビジネス",
+          "Business context": "ビジネス背景",
+          "Priorities": "優先事項",
+          "Communication": "コミュニケーション",
+          "Shared understanding": "共通認識",
+          "Reliable delivery": "確かなデリバリー",
+          "Engineering / Delivery": "エンジニアリング / デリバリー",
+          "System design": "システム設計",
+          "Development": "開発",
+          "Team execution": "チームでの実行",
+          "Quality & delivery": "品質・納品",
+          "“Bridging business requirements and engineering execution across Japan and Vietnam.”": "「日本とベトナムをつなぎ、ビジネス要件をエンジニアリングの実行へ結びつける。」",
+          "05 / Working philosophy": "05 / 仕事の哲学",
+          "Calm in approach.": "落ち着いて向き合い、",
+          "Clear on what matters.": "大切なことを明確に。",
+          "Good delivery is rarely one big gesture. It is the result of seeing clearly, making the next step manageable and improving as a team.": "優れたデリバリーは、一度の大きな成果だけで生まれるものではありません。状況を正しく捉え、次の一歩を実行可能にし、チームで改善を続けることから生まれます。",
+          "Understand the whole picture": "全体像を理解する",
+          "Look beyond the immediate task to the business, system, people, schedule and risks around it.": "目の前の作業だけでなく、ビジネス、システム、人、スケジュール、リスクまで見渡します。",
+          "Make complexity clear": "複雑さを整理する",
+          "Turn ambiguity into shared context, sensible priorities and concrete actions.": "曖昧さを共通の理解、適切な優先順位、具体的な行動へと変えます。",
+          "Connect the people doing the work": "仕事に関わる人をつなぐ",
+          "Bring customers, business stakeholders and engineering teams into the same conversation.": "お客様、ビジネス関係者、エンジニアリングチームを同じ対話につなげます。",
+          "Deliver value, then improve": "価値を届け、改善する",
+          "Technology is a means, not the destination. Learn from each delivery and make the next one better.": "テクノロジーは手段であり、目的ではありません。毎回のデリバリーから学び、次をより良くします。",
+          "06 / Career journey": "06 / キャリア",
+          "Growing the scope": "貢献の範囲を",
+          "of contribution.": "広げていく。",
+          "The path has moved from building software to helping people, teams and delivery systems work together.": "ソフトウェアをつくる仕事から、人、チーム、デリバリーの仕組みが協力できる環境づくりへと歩んできました。",
+          "Foundation": "基礎",
+          "Software Engineer": "ソフトウェアエンジニア",
+          "Build a strong understanding of software and systems.": "ソフトウェアとシステムへの確かな理解を築く。",
+          "Connection": "つなぐ",
+          "Connect customer intent with engineering work.": "お客様の意図とエンジニアリングの仕事をつなぐ。",
+          "Ownership": "主体性",
+          "Senior BrSE": "シニアBrSE",
+          "Take broader ownership of communication and clarity.": "コミュニケーションと認識合わせをより広く担う。",
+          "Team impact": "チームへの貢献",
+          "Team & Project Coordination": "チーム・プロジェクト調整",
+          "Support planning, alignment and team execution.": "計画、認識合わせ、チームの実行を支える。",
+          "Current direction": "現在の方向性",
+          "Onsite Leadership": "オンサイトリーダー",
+          "Expand influence across customer and delivery teams.": "お客様とデリバリーチームをつなぐ役割を広げる。",
+          "Future direction": "今後の方向性",
+          "Project → Delivery Management": "プロジェクト管理 → デリバリー管理",
+          "Grow responsibility for outcomes and business impact.": "成果とビジネスへの貢献に対する責任を広げる。",
+          "A progression in scope and responsibility—not a checklist of titles.": "役職名の一覧ではなく、役割の範囲と責任の広がりを表しています。",
+          "07 / AI & future": "07 / AIと未来",
+          "Better leverage.": "テクノロジーをより活かし、",
+          "More meaningful work.": "より大きな価値を生み出す。",
+          "AI is changing how software gets built. I am exploring": "AIはソフトウェア開発の進め方を変えています。私は",
+          "AI-assisted development and automation": "AIを活用した開発と自動化",
+          "with a practical question in mind: how can better tools help teams think more clearly, reduce repetitive work and deliver greater value?": "に取り組みながら、より良いツールがチームの思考を明確にし、反復作業を減らし、より大きな価値を届ける方法を考えています。",
+          "“The future is not about writing more code. It is about creating more value with better leverage.”": "「未来はコードをより多く書くことではなく、より良い仕組みを活用して、より多くの価値を生み出すことにある。」",
+          "AI-assisted coding": "AI支援によるコーディング",
+          "AI agents": "AIエージェント",
+          "Requirements analysis": "要件分析",
+          "Architecture thinking": "アーキテクチャ思考",
+          "Workflow automation": "業務プロセスの自動化",
+          "Team productivity": "チームの生産性",
+          "Next": "次の段階",
+          "Strengthen alignment at the customer interface.": "お客様との接点で認識合わせを強化する。",
+          "Project Manager": "プロジェクトマネージャー",
+          "Take ownership of plans, teams and project outcomes.": "計画、チーム、プロジェクトの成果に責任を持つ。",
+          "Long term": "長期的な目標",
+          "Delivery Manager": "デリバリーマネージャー",
+          "Connect delivery performance with business value.": "デリバリーの成果をビジネス価値につなげる。",
+          "A direction for continued growth: increasing scope, responsibility and business impact.": "役割の範囲と責任を広げ、ビジネスへの貢献を高めていく成長の方向性です。",
+          "08 / Let's connect": "08 / つながりましょう",
+          "Good work starts": "良い仕事は、",
+          "with a conversation.": "対話から始まります。",
+          "I am glad to connect with people interested in technology, AI, Japan–Vietnam collaboration, software delivery and the space between business and engineering.": "テクノロジー、AI、日越協業、ソフトウェアデリバリー、ビジネスとエンジニアリングの接点に関心のある方と、ぜひつながりたいと思っています。",
+          "Software delivery": "ソフトウェアデリバリー",
+          "Project management": "プロジェクト管理",
+          "Business × technology": "ビジネス × テクノロジー",
+          "Visit my GitHub profile": "GitHubプロフィールを見る",
+          "Add your email and LinkedIn URL here when ready.": "準備ができたらメールアドレスとLinkedInのURLを追加してください。",
+          "GitHub profile": "GitHubプロフィール",
+          "Thoughtfully connecting people, technology and business.": "人、テクノロジー、ビジネスを丁寧につなぐ。",
+          "[Your Name]. Thoughtfully connecting people, technology and business.": "[Your Name]. 人、テクノロジー、ビジネスを丁寧につなぐ。",
+          "GitHub ↗": "GitHub ↗",
+          "Back to top ↑": "ページ上部へ ↑"
+        }
+      };
+
       const header = document.querySelector(".site-header");
       const menuToggle = document.querySelector(".menu-toggle");
       const navLinks = document.querySelector("#nav-links");
       const navItems = [...navLinks.querySelectorAll('a[href^="#"]')];
+      const languageButtons = [...document.querySelectorAll("[data-language]")];
+      const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const sourceTextNodes = [];
+      while (textWalker.nextNode()) {
+        const node = textWalker.currentNode;
+        if (node.parentElement.closest("script, style")) continue;
+        sourceTextNodes.push({ node, source: node.nodeValue });
+      }
+
+      const pageMetadata = {
+        en: {
+          title: "IT Professional — Connecting Japan, Vietnam, Technology & Business",
+          description: "An IT professional with 14+ years across software engineering, Japan–Vietnam collaboration, project coordination and team leadership.",
+          socialDescription: "14+ years in software delivery, Japanese IT projects and cross-border team leadership."
+        },
+        vi: {
+          title: "Chuyên gia CNTT — Kết nối Nhật Bản, Việt Nam, Công nghệ & Kinh doanh",
+          description: "Chuyên gia CNTT với hơn 14 năm kinh nghiệm phát triển phần mềm, hợp tác Nhật Bản–Việt Nam, điều phối dự án và quản lý đội ngũ.",
+          socialDescription: "Hơn 14 năm kinh nghiệm triển khai phần mềm, dự án CNTT Nhật Bản và quản lý đội ngũ xuyên biên giới."
+        },
+        ja: {
+          title: "ITプロフェッショナル — 日本・ベトナム・テクノロジー・ビジネスをつなぐ",
+          description: "ソフトウェア開発、日越協業、プロジェクト調整、チームマネジメントに14年以上携わるITプロフェッショナル。",
+          socialDescription: "ソフトウェアデリバリー、日本のITプロジェクト、国境を越えたチームマネジメントに14年以上の経験。"
+        }
+      };
+
+      const accessibilityLabels = {
+        en: {
+          menu: ["Open navigation menu", "Close navigation menu"],
+          skip: "Skip to content",
+          language: "Choose language",
+          nav: "Main navigation",
+          professionalDevelopment: "Professional development",
+          workAreas: "Areas of work",
+          connectTeams: "Connecting both teams",
+          learningAreas: "Areas of learning",
+          careerDirection: "Career direction",
+          careerProgression: "Career progression",
+          contactTopics: "Topics of interest"
+        },
+        vi: {
+          menu: ["Mở menu điều hướng", "Đóng menu điều hướng"],
+          skip: "Bỏ qua điều hướng",
+          language: "Chọn ngôn ngữ",
+          nav: "Điều hướng chính",
+          professionalDevelopment: "Quá trình phát triển nghề nghiệp",
+          workAreas: "Lĩnh vực công việc",
+          connectTeams: "Kết nối hai đội ngũ",
+          learningAreas: "Lĩnh vực đang tìm hiểu",
+          careerDirection: "Định hướng nghề nghiệp",
+          careerProgression: "Quá trình phát triển nghề nghiệp",
+          contactTopics: "Chủ đề quan tâm"
+        },
+        ja: {
+          menu: ["ナビゲーションメニューを開く", "ナビゲーションメニューを閉じる"],
+          skip: "本文へ移動",
+          language: "言語を選択",
+          nav: "メインナビゲーション",
+          professionalDevelopment: "キャリアの成長",
+          workAreas: "担当領域",
+          connectTeams: "両チームをつなぐ",
+          learningAreas: "学習・探求分野",
+          careerDirection: "キャリアの方向性",
+          careerProgression: "キャリアの歩み",
+          contactTopics: "関心のあるテーマ"
+        }
+      };
+
+      const setLanguage = (language) => {
+        const messages = translations[language] || {};
+        sourceTextNodes.forEach(({ node, source }) => {
+          const text = source.trim();
+          const translated = Object.hasOwn(messages, text) ? messages[text] : text;
+          node.nodeValue = source.replace(text, translated);
+        });
+
+        const metadata = pageMetadata[language];
+        const labels = accessibilityLabels[language];
+        document.documentElement.lang = language;
+        document.title = metadata.title;
+        document.querySelector('meta[name="description"]').content = metadata.description;
+        document.querySelector('meta[property="og:title"]').content = metadata.title;
+        document.querySelector('meta[property="og:description"]').content = metadata.socialDescription;
+        document.querySelector(".skip-link").setAttribute("aria-label", labels.skip);
+        document.querySelector(".nav").setAttribute("aria-label", labels.nav);
+        document.querySelector(".language-switch").setAttribute("aria-label", labels.language);
+        document.querySelector(".story-path").setAttribute("aria-label", labels.professionalDevelopment);
+        document.querySelectorAll(".card-tags").forEach((list) => list.setAttribute("aria-label", labels.workAreas));
+        document.querySelector(".bridge-center").setAttribute("aria-label", labels.connectTeams);
+        document.querySelector(".future-list").setAttribute("aria-label", labels.learningAreas);
+        document.querySelector(".vision").setAttribute("aria-label", labels.careerDirection);
+        document.querySelector(".journey").setAttribute("aria-label", labels.careerProgression);
+        document.querySelector(".contact-topics").setAttribute("aria-label", labels.contactTopics);
+        document.querySelector(".connection-map").querySelector("title").textContent = translations[language]?.["Connecting Japan, Vietnam, business and technology"] || "Connecting Japan, Vietnam, business and technology";
+        document.querySelector(".connection-map").querySelector("desc").textContent = translations[language]?.["Four interconnected ideas surround a shared delivery point: Japan, Vietnam, business and technology."] || "Four interconnected ideas surround a shared delivery point: Japan, Vietnam, business and technology.";
+        menuToggle.setAttribute("aria-label", labels.menu[menuToggle.getAttribute("aria-expanded") === "true" ? 1 : 0]);
+        languageButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.language === language));
+        });
+      };
 
       const setMenuOpen = (isOpen) => {
         menuToggle.setAttribute("aria-expanded", String(isOpen));
-        menuToggle.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+        const language = document.documentElement.lang;
+        menuToggle.setAttribute("aria-label", accessibilityLabels[language].menu[isOpen ? 1 : 0]);
         navLinks.classList.toggle("is-open", isOpen);
         document.body.classList.toggle("menu-open", isOpen);
       };
+
+      languageButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setLanguage(button.dataset.language);
+          setMenuOpen(false);
+          if (window.matchMedia("(max-width: 980px)").matches) menuToggle.focus();
+        });
+      });
+
+      setLanguage("en");
 
       menuToggle.addEventListener("click", () => {
         setMenuOpen(menuToggle.getAttribute("aria-expanded") !== "true");
