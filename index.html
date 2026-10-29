@@ -616,6 +616,107 @@
         content: "";
       }
 
+      .career-history { margin-top: 76px; }
+
+      .career-history-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .career-history-heading h3 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+        font-weight: 400;
+        letter-spacing: -.045em;
+        line-height: 1.12;
+      }
+
+      .career-history-heading p:last-child {
+        max-width: 390px;
+        margin: 0;
+        color: var(--muted);
+        font-size: .84rem;
+      }
+
+      .career-timeline {
+        position: relative;
+        display: grid;
+        gap: 0;
+        padding: 5px 0;
+      }
+
+      .career-timeline::before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 178px;
+        width: 1px;
+        background: var(--line);
+        content: "";
+      }
+
+      .career-entry {
+        position: relative;
+        display: grid;
+        grid-template-columns: 152px minmax(0, 1fr);
+        gap: 54px;
+        padding: 22px 0;
+      }
+
+      .career-entry::before {
+        position: absolute;
+        top: 30px;
+        left: 173px;
+        width: 11px;
+        height: 11px;
+        border: 2px solid var(--moss);
+        border-radius: 50%;
+        background: var(--paper);
+        content: "";
+      }
+
+      .career-date {
+        padding-top: 2px;
+        color: var(--moss-dark);
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .025em;
+        line-height: 1.65;
+      }
+
+      .career-entry h4 {
+        margin: 0;
+        font-size: .98rem;
+        font-weight: 650;
+        letter-spacing: -.01em;
+      }
+
+      .career-role {
+        margin: 5px 0 0;
+        color: var(--moss);
+        font-size: .8rem;
+        font-weight: 600;
+      }
+
+      .career-detail {
+        max-width: 700px;
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: .82rem;
+      }
+
+      .career-entry.is-current::before {
+        border-color: var(--rust);
+        background: var(--rust);
+        box-shadow: 0 0 0 4px rgba(182, 93, 71, .12);
+      }
+
+      .career-entry.is-current .career-date { color: var(--rust); }
+
       .strengths-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1098,6 +1199,12 @@
         .experience-grid { grid-template-columns: 1fr; }
         .experience-card { min-height: 270px; }
         .experience-card h3 { margin-top: 34px; }
+        .career-history { margin-top: 58px; }
+        .career-history-heading { align-items: start; flex-direction: column; gap: 12px; }
+        .career-timeline::before { left: 5px; }
+        .career-entry { grid-template-columns: 1fr; gap: 7px; padding: 18px 0 18px 28px; }
+        .career-entry::before { top: 22px; left: 0; width: 11px; height: 11px; }
+        .career-date { padding-top: 0; font-size: .64rem; }
         .strengths-grid { grid-template-columns: repeat(2, 1fr); }
         .bridge-map { grid-template-columns: 1fr; gap: 20px; margin-top: 42px; }
         .bridge-side { min-height: auto; padding: 22px; }
@@ -1302,6 +1409,73 @@
             </article>
           </div>
           <p class="experience-note">Client and project details are intentionally kept general. Add verified role names, dates or outcomes here if you want to share them publicly.</p>
+          <div class="career-history" data-reveal>
+            <div class="career-history-heading">
+              <div>
+                <p class="section-kicker">Verified employment history</p>
+                <h3>A career across<br>Vietnam and Japan.</h3>
+              </div>
+              <p>Roles, locations and transitions are based on my employment history. Responsibilities are described at a high level to respect client and project confidentiality.</p>
+            </div>
+            <div class="career-timeline" aria-label="Employment history timeline">
+              <article class="career-entry">
+                <time class="career-date" datetime="2012-08">Aug 2012 — May 2014</time>
+                <div>
+                  <h4>ISB VIETNAM CO., LTD.</h4>
+                  <p class="career-role">Vietnam · Software engineering</p>
+                  <p class="career-detail">Started my career in software development and built a foundation in engineering work.</p>
+                </div>
+              </article>
+              <article class="career-entry">
+                <time class="career-date" datetime="2014-05">May 2014 — Mar 2015</time>
+                <div>
+                  <h4>AOTS professional training · ISB Co., Ltd.</h4>
+                  <p class="career-role">Japan · AOTS training programme</p>
+                  <p class="career-detail">Travelled to Japan for professional training through the Association for Overseas Technical Scholarship (AOTS), then returned to Vietnam on completion.</p>
+                </div>
+              </article>
+              <article class="career-entry">
+                <time class="career-date" datetime="2015-03">Mar 2015 — May 2017</time>
+                <div>
+                  <h4>ISB VIETNAM CO., LTD.</h4>
+                  <p class="career-role">Vietnam · Continued after AOTS training</p>
+                  <p class="career-detail">Continued my career in Vietnam after completing the AOTS programme.</p>
+                </div>
+              </article>
+              <article class="career-entry">
+                <time class="career-date" datetime="2017-05">May 2017 — Jun 2020</time>
+                <div>
+                  <h4>ISB Co., Ltd. · Japan assignment</h4>
+                  <p class="career-role">Japan · Seconded from ISB Vietnam</p>
+                  <p class="career-detail">Worked in Japan, supporting collaboration between Japanese customers and Vietnam-based delivery teams.</p>
+                </div>
+              </article>
+              <article class="career-entry">
+                <time class="career-date" datetime="2020-06">Jun 2020</time>
+                <div>
+                  <h4>ISB VIETNAM CO., LTD. · Group transfer</h4>
+                  <p class="career-role">ISB Group · Internal transfer</p>
+                  <p class="career-detail">Completed the Japan assignment and transferred within the ISB Group.</p>
+                </div>
+              </article>
+              <article class="career-entry">
+                <time class="career-date" datetime="2020-07">Jul 2020 — Mar 2022</time>
+                <div>
+                  <h4>Computer House Co., Ltd.</h4>
+                  <p class="career-role">Japan · ISB Group internal transfer</p>
+                  <p class="career-detail">Continued my career in Japan through an internal group transfer.</p>
+                </div>
+              </article>
+              <article class="career-entry is-current">
+                <time class="career-date" datetime="2022-04">Apr 2022 — Present</time>
+                <div>
+                  <h4>ISB Co., Ltd.</h4>
+                  <p class="career-role">Japan · ISB Group internal transfer · Current</p>
+                  <p class="career-detail">Continuing to work across software engineering, BrSE, customer communication and offshore-team coordination.</p>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1618,6 +1792,37 @@
           "WBS & schedule": "WBS & tiến độ",
           "Team management": "Quản lý đội ngũ",
           "Client and project details are intentionally kept general. Add verified role names, dates or outcomes here if you want to share them publicly.": "Thông tin khách hàng và dự án được giữ ở mức tổng quát. Bạn có thể bổ sung chức danh, thời gian hoặc kết quả đã xác thực nếu muốn công khai.",
+          "Verified employment history": "Lịch sử công tác đã xác nhận",
+          "A career across": "Hành trình nghề nghiệp",
+          "Vietnam and Japan.": "tại Việt Nam và Nhật Bản.",
+          "Roles, locations and transitions are based on my employment history. Responsibilities are described at a high level to respect client and project confidentiality.": "Chức danh, địa điểm và các lần chuyển công ty dựa trên hồ sơ công tác. Mô tả trách nhiệm được giữ ở mức tổng quan để tôn trọng tính bảo mật của khách hàng và dự án.",
+          "Employment history timeline": "Dòng thời gian công tác",
+          "Aug 2012 — May 2014": "Tháng 8/2012 — Tháng 5/2014",
+          "Vietnam · Software engineering": "Việt Nam · Kỹ thuật phần mềm",
+          "Started my career in software development and built a foundation in engineering work.": "Bắt đầu sự nghiệp trong lĩnh vực phát triển phần mềm và xây dựng nền tảng kỹ thuật.",
+          "May 2014 — Mar 2015": "Tháng 5/2014 — Tháng 3/2015",
+          "AOTS professional training · ISB Co., Ltd.": "Chương trình đào tạo AOTS · ISB Co., Ltd.",
+          "Japan · AOTS training programme": "Nhật Bản · Chương trình đào tạo AOTS",
+          "Travelled to Japan for professional training through the Association for Overseas Technical Scholarship (AOTS), then returned to Vietnam on completion.": "Sang Nhật Bản tham gia chương trình đào tạo của Hiệp hội Học bổng Kỹ thuật Hải ngoại (AOTS), sau đó trở về Việt Nam khi hoàn thành.",
+          "Mar 2015 — May 2017": "Tháng 3/2015 — Tháng 5/2017",
+          "Vietnam · Continued after AOTS training": "Việt Nam · Tiếp tục công tác sau đào tạo AOTS",
+          "Continued my career in Vietnam after completing the AOTS programme.": "Tiếp tục làm việc tại Việt Nam sau khi hoàn thành chương trình AOTS.",
+          "May 2017 — Jun 2020": "Tháng 5/2017 — Tháng 6/2020",
+          "ISB Co., Ltd. · Japan assignment": "ISB Co., Ltd. · Công tác tại Nhật Bản",
+          "Japan · Seconded from ISB Vietnam": "Nhật Bản · Biệt phái từ ISB Việt Nam",
+          "Worked in Japan, supporting collaboration between Japanese customers and Vietnam-based delivery teams.": "Làm việc tại Nhật Bản, hỗ trợ phối hợp giữa khách hàng Nhật và đội ngũ triển khai tại Việt Nam.",
+          "Jun 2020": "Tháng 6/2020",
+          "ISB VIETNAM CO., LTD. · Group transfer": "ISB VIETNAM CO., LTD. · Điều chuyển nội bộ",
+          "ISB Group · Internal transfer": "ISB Group · Điều chuyển nội bộ",
+          "Completed the Japan assignment and transferred within the ISB Group.": "Kết thúc đợt công tác tại Nhật và chuyển công tác trong nội bộ ISB Group.",
+          "Jul 2020 — Mar 2022": "Tháng 7/2020 — Tháng 3/2022",
+          "Computer House Co., Ltd.": "Computer House Co., Ltd.",
+          "Japan · ISB Group internal transfer": "Nhật Bản · Điều chuyển nội bộ ISB Group",
+          "Continued my career in Japan through an internal group transfer.": "Tiếp tục sự nghiệp tại Nhật Bản theo hình thức điều chuyển nội bộ tập đoàn.",
+          "Apr 2022 — Present": "Tháng 4/2022 — Hiện tại",
+          "ISB Co., Ltd.": "ISB Co., Ltd.",
+          "Japan · ISB Group internal transfer · Current": "Nhật Bản · Điều chuyển nội bộ ISB Group · Hiện tại",
+          "Continuing to work across software engineering, BrSE, customer communication and offshore-team coordination.": "Tiếp tục làm việc trong các lĩnh vực kỹ thuật phần mềm, BrSE, giao tiếp với khách hàng và điều phối đội ngũ offshore.",
           "03 / Core strengths": "03 / Năng lực cốt lõi",
           "A broad view.": "Tư duy tổng thể.",
           "A practical way of working.": "Cách làm việc thực tiễn.",
@@ -1792,6 +1997,37 @@
           "WBS & schedule": "WBS・スケジュール",
           "Team management": "チーム管理",
           "Client and project details are intentionally kept general. Add verified role names, dates or outcomes here if you want to share them publicly.": "お客様名やプロジェクトの詳細は一般的な表現にしています。公開する場合は、確認済みの役職、期間、成果を追加してください。",
+          "Verified employment history": "職務経歴",
+          "A career across": "ベトナムと日本を",
+          "Vietnam and Japan.": "またぐキャリア。",
+          "Roles, locations and transitions are based on my employment history. Responsibilities are described at a high level to respect client and project confidentiality.": "役職、勤務地、異動時期は職務経歴書に基づいています。お客様とプロジェクトの機密性に配慮し、業務内容は概要のみ記載しています。",
+          "Employment history timeline": "職務経歴のタイムライン",
+          "Aug 2012 — May 2014": "2012年8月 — 2014年5月",
+          "Vietnam · Software engineering": "ベトナム · ソフトウェア開発",
+          "Started my career in software development and built a foundation in engineering work.": "ソフトウェア開発からキャリアをスタートし、エンジニアリングの基礎を築く。",
+          "May 2014 — Mar 2015": "2014年5月 — 2015年3月",
+          "AOTS professional training · ISB Co., Ltd.": "AOTS研修 · 株式会社アイ・エス・ビー",
+          "Japan · AOTS training programme": "日本 · AOTS研修プログラム",
+          "Travelled to Japan for professional training through the Association for Overseas Technical Scholarship (AOTS), then returned to Vietnam on completion.": "AOTS（海外技術者研修協会）の研修に参加するため来日。研修修了後、ベトナムへ帰国。",
+          "Mar 2015 — May 2017": "2015年3月 — 2017年5月",
+          "Vietnam · Continued after AOTS training": "ベトナム · AOTS研修後、業務を継続",
+          "Continued my career in Vietnam after completing the AOTS programme.": "AOTS研修修了後、ベトナムでキャリアを継続。",
+          "May 2017 — Jun 2020": "2017年5月 — 2020年6月",
+          "ISB Co., Ltd. · Japan assignment": "株式会社アイ・エス・ビー · 日本赴任",
+          "Japan · Seconded from ISB Vietnam": "日本 · ISB VIETNAMからの出向",
+          "Worked in Japan, supporting collaboration between Japanese customers and Vietnam-based delivery teams.": "日本で勤務し、日本のお客様とベトナムの開発チームとの連携を支援。",
+          "Jun 2020": "2020年6月",
+          "ISB VIETNAM CO., LTD. · Group transfer": "ISB VIETNAM CO., LTD. · グループ内異動",
+          "ISB Group · Internal transfer": "ISBグループ · グループ内異動",
+          "Completed the Japan assignment and transferred within the ISB Group.": "日本での出向を終え、ISBグループ内で異動。",
+          "Jul 2020 — Mar 2022": "2020年7月 — 2022年3月",
+          "Computer House Co., Ltd.": "コンピューターハウス株式会社",
+          "Japan · ISB Group internal transfer": "日本 · ISBグループ内異動",
+          "Continued my career in Japan through an internal group transfer.": "グループ内異動により、日本でのキャリアを継続。",
+          "Apr 2022 — Present": "2022年4月 — 現在",
+          "ISB Co., Ltd.": "株式会社アイ・エス・ビー",
+          "Japan · ISB Group internal transfer · Current": "日本 · ISBグループ内異動 · 現在",
+          "Continuing to work across software engineering, BrSE, customer communication and offshore-team coordination.": "ソフトウェア開発、BrSE、お客様とのコミュニケーション、オフショアチームの調整に従事。",
           "03 / Core strengths": "03 / 強み",
           "A broad view.": "全体を見渡す視点。",
           "A practical way of working.": "現場に根ざした進め方。",
